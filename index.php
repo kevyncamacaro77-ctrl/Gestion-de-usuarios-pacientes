@@ -4,6 +4,7 @@
  * Función: Enrutador principal del sistema Fundación Adventista
  */
 
+session_start();
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
 
@@ -27,13 +28,26 @@ switch ($action) {
 
 
     case 'dashboard':
-    session_start();
-    if (!isset($_SESSION['user_id'])) {
+    if (isset($_SESSION['rol'])) {
+        $rol = $_SESSION['rol'];
+        
+        // Mapeo de roles a carpetas
+        if ($rol == 1) $folder = 'admin';
+        elseif ($rol == 2) $folder = 'medico';
+        elseif ($rol == 3) $folder = 'pacient';
+        elseif ($rol == 4) $folder = 'secretaria';
+        else $folder = 'auth';
+
+        $file = "views/$folder/dashboard.php";
+
+        if (file_exists($file)) {
+            include $file;
+        } else {
+            echo "Error: El archivo $file no existe. Revisa la mudanza.";
+        }
+    } else {
         header("Location: index.php?action=login");
-        exit();
     }
-    
-    include 'views/auth/dashboard.php'; 
     break;
 
     case 'logout':

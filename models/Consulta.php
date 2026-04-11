@@ -46,4 +46,20 @@ class Consulta {
 
         return $detalles;
     }
+
+    public function obtenerPorPaciente($id_usuario) {
+    // Esta consulta une las tablas para traer el nombre del médico y la fecha
+    $sql = "SELECT c.*, m.nombre as nombre_medico 
+            FROM Consulta c
+            JOIN medico m ON c.medico_idmedico = m.idmedico
+            JOIN paciente p ON c.paciente_idpaciente = p.idpaciente
+            WHERE p.Usuario_id_usuario = :id_usuario
+            ORDER BY c.fecha DESC";
+            
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute(['id_usuario' => $id_usuario]);
+    
+    // IMPORTANTE: Como usas flechas (->) en la vista, usamos FETCH_OBJ
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
 }

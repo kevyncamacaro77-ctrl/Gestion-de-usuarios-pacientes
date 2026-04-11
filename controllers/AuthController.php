@@ -8,27 +8,29 @@ class AuthController {
         $this->userModel = new Usuario($db);
     }
 
-    public function login() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $user = trim($_POST['usuario']);
-            $pass = trim($_POST['password']);
+   public function login() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $user = trim($_POST['usuario']);
+        $pass = trim($_POST['password']);
 
-            $auth = $this->userModel->autenticar($user, $pass);
+        // El modelo devuelve un array con los datos del usuario si tiene éxito
+        $auth = $this->userModel->autenticar($user, $pass);
 
-            if ($auth) {
-                session_start();
-                $_SESSION['user_id'] = $auth->id_usuario;
-                $_SESSION['username'] = $auth->nombre_usuario;
-                $_SESSION['rol'] = $auth->id_rol;
+        if ($auth) {
+         session_start();
+         // CORRECCIÓN: Usar sintaxis de objeto -> en lugar de array []
+          $_SESSION['user_id'] = $auth->id_usuario;
+          $_SESSION['nombre'] = $auth->nombre_usuario;
+          $_SESSION['rol'] = $auth->id_rol;
 
-                header("Location: index.php?action=dashboard");
-                exit();
-            } else {
-                header("Location: index.php?action=login&error=1");
-                exit();
-            }
+           header("Location: index.php?action=dashboard");
+            exit();
+        } else {
+            header("Location: index.php?action=login&error=1");
+            exit();
         }
     }
+}
 
     public function logout() {
         session_start();

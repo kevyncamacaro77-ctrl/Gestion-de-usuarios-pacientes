@@ -15,7 +15,7 @@ class GestionController {
 
     // Función principal de Citas (Ver, Crear, Borrar)
     public function citas() {
-        session_start();
+       // session_start();
         if (!isset($_SESSION['user_id'])) header("Location: index.php");
 
         $rol = $_SESSION['rol'];
@@ -30,18 +30,21 @@ class GestionController {
         // Obtener listado según quien lo vea
         $citas = ($rol == 1) ? $this->citaModel->listarTodo() : $this->citaModel->listarPorUsuario($id, $rol);
         
-        include 'views/citas_principal.php';
+        include 'views/pacient/citas_principal.php';
     }
 
     // Función de Historial/Consultas
-    public function historial() {
-    session_start();
-    if (!isset($_SESSION['user_id'])) header("Location: index.php");
+  public function historial() {
+    // session_start(); <-- Ya no es necesario si está en index.php
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: index.php?action=login");
+        exit();
+    }
 
     $consultaModel = new Consulta($this->db);
-    // Traemos el historial con especialidades
-    $historial = $consultaModel->listarHistorialCompleto($_SESSION['user_id']);
+    $historial = $consultaModel->obtenerPorPaciente($_SESSION['user_id']);
     
-    include 'views/historial_paciente.php';
+    // RUTA CORREGIDA: Apunta a la subcarpeta 'pacient'
+    include 'views/pacient/historial_paciente.php'; 
 }
 }
