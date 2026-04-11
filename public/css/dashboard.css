@@ -1,0 +1,75 @@
+/* Colores de alto contraste */
+:root {
+    --bg-dark: #050a14;        /* Fondo casi negro para evitar deslumbramiento */
+    --card-bg: #0f172a;      /* Tarjetas un poco más claras */
+    --text-main: #ffffff;     /* Texto blanco puro (Máxima legibilidad) */
+    --accent: #00f2ff;        /* Cian neón para botones y enlaces */
+    --error: #ff4d4d;         /* Rojo intenso para alertas */
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-size: 1.1rem;        /* Un poco más grande de lo normal */
+    letter-spacing: 0.5px;    /* Espaciado para que las letras no se peguen */
+}
+
+.card {
+    background: var(--card-bg);
+    border: 2px solid #1e293b; /* Bordes marcados */
+    padding: 25px;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    height: 100vh;
+}
+
+/* Sidebar Estilo Cyberpunk */
+.sidebar {
+    background: rgba(10, 25, 47, 0.8);
+    border-right: 1px solid var(--border);
+    padding: 30px;
+}
+
+.sidebar a {
+    display: block;
+    color: #8892b0;
+    text-decoration: none;
+    padding: 15px 0;
+    transition: 0.3s;
+}
+
+.sidebar a:hover { color: var(--neon-cyan); }
+
+/* Tabla de Citas Glassmorphism */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.data-table th {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--neon-cyan);
+    padding: 15px;
+    text-align: left;
+}
+
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-action {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--neon-cyan);
+    background: transparent;
+    color: var(--neon-cyan);
+    cursor: pointer;
+}
