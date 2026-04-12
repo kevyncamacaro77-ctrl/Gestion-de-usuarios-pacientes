@@ -131,7 +131,7 @@ public function buscarPaciente() {
     public function historial() {
         if (!isset($_SESSION['user_id'])) { header("Location: index.php?action=login"); exit(); }
         $historial = $this->consultaModel->obtenerPorPaciente($_SESSION['user_id']);
-        include 'views/pacient/historial_paciente.php'; 
+        include 'views/pacient/historial.php'; 
     }
 
     private function calcularHorasRestantes($fecha) {

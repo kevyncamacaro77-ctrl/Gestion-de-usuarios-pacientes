@@ -1,0 +1,51 @@
+/* public/css/shared.css */
+
+/* Contenedor del Modal */
+.modal-custom {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px); /* Efecto moderno */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Caja de contenido */
+.modal-content {
+    background: #1a222d;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Inputs y Selects */
+.modal-content .form-control {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background: #0f172a;
+    color: white;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    outline: none;
+}
+
+.modal-content .form-control:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

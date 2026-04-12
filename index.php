@@ -2,17 +2,20 @@
 /**
  * ARCHIVO: index.php
  * Función: Enrutador principal y punto de entrada universal.
+ * Versión optimizada con DashboardController.
  */
 
 // 1. Configuración de Sesión y Errores
 session_start();
+define('ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// 2. Importación de archivos base
+// 2. Importación de archivos base (Controladores y DB)
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/GestionController.php';
+require_once 'controllers/DashboardController.php'; // Nuevo controlador para las vistas principales
 
 // 3. Inicialización de la Base de Datos
 $database = new Database();
@@ -25,6 +28,7 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : null;
 // 5. Instanciar Controladores
 $authCtrl = new AuthController($db);
 $gestionCtrl = new GestionController($db);
+$dashboardCtrl = new DashboardController($db); // Instanciamos el gestor de tableros
 
 // 6. ENRUTADOR (SWITCH)
 switch ($action) {
@@ -42,63 +46,89 @@ switch ($action) {
         $authCtrl->logout();
         break;
 
-  case 'dashboard':
-    if ($rol) {
-        $folders = [1 => 'admin', 2 => 'medico', 3 => 'pacient', 4 => 'secretaria'];
-        $folder = isset($folders[$rol]) ? $folders[$rol] : 'auth';
-        $file = "views/$folder/dashboard.php";
-        
-        if (file_exists($file)) {
-            include $file;
+    case 'registro':
+        include 'views/auth/registro.php';
+        break;
+
+    case 'register_post':
+        $authCtrl->registrar();
+        break;
+
+    // --- DASHBOARD CENTRALIZADO ---
+    case 'dashboard':
+        // El DashboardController decide qué cargar según el rol y limpia datos fantasmas
+        $dashboardCtrl->index();
+        break;
+
+    // --- DISPONIBILIDAD (MÉDICO Y ADMIN) ---
+    case 'gestionar_disponibilidad':
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->disponibilidad();
         } else {
-            echo "Error: La vista $file no existe.";
+            header("Location: index.php?action=login");
         }
-    } else {
-        header("Location: index.php?action=login");
-        exit();
-    }
-    break;
+        break;
 
-    // --- MÉDICO Y ADMIN ---
-case 'gestionar_disponibilidad':
-    if ($rol == 2 || $rol == 1) {
-        $gestionCtrl->disponibilidad();
-    } else {
-        header("Location: index.php?action=login");
-    }
-    break;
+    case 'guardarDisponibilidad': 
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->guardarDisponibilidad();
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
 
+    case 'eliminar_horario':
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->eliminarHorario();
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
 
-case 'guardarDisponibilidad': 
-    if ($rol == 2 || $rol == 1) {
-        $gestionCtrl->guardarDisponibilidad();
-    } else {
-        header("Location: index.php?action=login");
-    }
-    break;
-
-    // --- ACCIÓN PARA ELIMINAR ---
-case 'eliminar_horario':
-    if ($rol == 2 || $rol == 1) {
-        $gestionCtrl->eliminarHorario();
-    } else {
-        header("Location: index.php?action=login");
-    }
-    break;
-
-
+    // --- GESTIÓN DE PACIENTES Y CONSULTAS ---
     case 'buscar_paciente':
-        if ($rol == 2 || $rol == 4 || $rol == 1) {
+        // El paciente (rol 3 en tu sistema anterior, ajustado a 4 según necesites) también puede buscar
+        if ($rol == 2 || $rol == 1 || $rol == 4) {
             $gestionCtrl->buscarPaciente();
         } else {
             header("Location: index.php?action=login");
         }
         break;
 
-    // --- HISTORIAL (PACIENTE Y MÉDICO) ---
+    case 'mis_pacientes':
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->buscarPaciente(); 
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
+
+    case 'nueva_consulta':
+    case 'editar_consulta':
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->mostrarConsulta(); // Muestra el formulario de historia clínica
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
+
+    case 'guardar_consulta':
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->guardarConsulta();
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
+
+    // --- HISTORIAL Y CITAS ---
     case 'historial':
-        if ($rol == 3 || $rol == 2) {
-            $gestionCtrl->historial();
+        $gestionCtrl->historial();
+        break;
+
+    case 'citas':
+    case 'citas_medico':
+        if ($rol) {
+            $gestionCtrl->citas();
         } else {
             header("Location: index.php?action=login");
         }
@@ -113,55 +143,8 @@ case 'eliminar_horario':
         }
         break;
 
-    // --- REGISTRO ---
-    case 'registro':
-        include 'views/auth/registro.php';
-        break;
 
-    case 'register_post':
-        $authCtrl->registrar();
-        break;
-
-        
-case 'citas':
-    if ($rol) {
-        $gestionCtrl->citas();
-    } else {
-        header("Location: index.php?action=login");
-    }
-    break;
-
-case 'citas_medico':
-    if ($rol == 2 || $rol == 1 || $rol == 4) {
-        $gestionCtrl->citas(); // Llamamos a la función que ya tienes en el controlador
-    } else {
-        header("Location: index.php?action=login");
-    }
-    break;
-
-// --- LISTADO DE PACIENTES ---
-case 'mis_pacientes':
-    if ($rol == 2 || $rol == 1 || $rol == 4) {
-        // Asegúrate de tener esta función en tu GestionController
-        $gestionCtrl->buscarPaciente(); 
-    } else {
-        header("Location: index.php?action=login");
-    }
-    break;
-
-case 'nueva_consulta':
-    $gestionCtrl->mostrarConsulta();
-    break;
-
-case 'guardar_consulta':
-    $gestionCtrl->guardarConsulta();
-    break;
-
-case 'editar_consulta':
-    $gestionCtrl->mostrarConsulta(); // Usamos la misma función porque ella detecta el ID
-    break;
-
-    
+    // --- POR DEFECTO ---
     default:
         header("Location: index.php?action=login");
         break;
