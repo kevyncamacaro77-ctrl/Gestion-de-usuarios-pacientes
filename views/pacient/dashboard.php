@@ -1,3 +1,7 @@
+<?php 
+// Parche temporal para que no salga el error de variable indefinida
+$citas_pendientes = $citas_pendientes ?? 0; 
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,46 +11,28 @@
 </head>
 <body>
     <div class="main-container">
-        <aside class="sidebar">
-            <div class="logo-container" style="width: 50px; height: 50px; margin-bottom: 20px;">
-                <img src="public/img/logo_hospital.png" alt="+" class="logo" style="max-width: 50%;">
-            </div>
-            <h2>Menú</h2>
-            <nav>
-                <a href="index.php?action=dashboard" class="active">Inicio</a>
-                
-                <?php if($_SESSION['rol'] == 3): // PACIENTE ?>
-                    <a href="index.php?action=citas">Mis Citas</a>
-                    <a href="index.php?action=historial">Mi Historial</a>
-                <?php endif; ?>
-
-                <?php if($_SESSION['rol'] == 2): // MÉDICO ?>
-                    <a href="index.php?action=citas_pendientes">Citas Pendientes</a>
-                    <a href="index.php?action=pacientes">Mis Pacientes</a>
-                <?php endif; ?>
-
-                <?php if($_SESSION['rol'] == 1): // ADMIN ?>
-                    <a href="index.php?action=reportes">Reportes Globales</a>
-                    <a href="index.php?action=usuarios">Gestionar Personal</a>
-                <?php endif; ?>
-
-                <a href="index.php?action=logout" style="color: #ff4d4d; margin-top: 50px;">Cerrar Sesión</a>
-            </nav>
-        </aside>
+        
+        <?php include __DIR__ . '/sidebar.php'; ?>
 
         <main class="content" style="padding: 50px;">
             <header>
-                <h1>Bienvenido, <?= $_SESSION['username'] ?></h1>
-                <p>Has ingresado al sistema de gestión oftalmológica.</p>
+                <h1>Bienvenido, <?php echo $_SESSION['nombre']; ?></h1>
+                <p>Este es tu panel de control donde puedes gestionar tus citas y revisar tu historial médico.</p>
             </header>
 
-            <section class="dashboard-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px;">
-                <div class="card" style="background: var(--glass); padding: 30px; border-radius: 15px; border: 1px solid var(--border);">
-                    <h3>Estado del Sistema</h3>
-                    <p style="color: var(--neon-cyan);">Online</p>
+            <section class="dashboard-cards">
+                <div class="card">
+                    <h2>Próximas Citas</h2>
+                    <p>Tienes <?php echo $citas_pendientes; ?> citas próximas.</p>
+                    <a href="index.php?action=citas" class="btn">Ver Citas</a>
                 </div>
-                </section>
+
+                <div class="card">
+                    <h2>Historial Médico</h2>
+                    <p>Revisa tu historial médico actualizado.</p>
+                    <a href="index.php?action=historial" class="btn">Ver Historial</a>
+                </div>
+            </section>
         </main>
-    </div>
-</body>
+    </div> </body>
 </html>

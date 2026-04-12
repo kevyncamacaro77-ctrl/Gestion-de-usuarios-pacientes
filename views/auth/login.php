@@ -18,7 +18,7 @@
                 <p>Fundación Hospital Adventista de Venezuela</p>
             </header>
 
-            <form action="index.php?action=auth" method="POST">
+          <form action="index.php?action=auth" method="POST">
                 <fieldset>
                     <legend>Identificación de Usuario</legend>
 

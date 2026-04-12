@@ -1,127 +1,172 @@
+/* =========================================
+   ESTILOS GENERALES (BASADO EN TU CAPTURA)
+   ========================================= */
 :root {
-    --primary: #007bff;
-    --secondary: #00d4ff;
-    --dark-bg: #0a192f;
-    --light-text: #e6f1ff;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --border-color: rgba(0, 212, 255, 0.3);
+    --bg-body: #e9ecef;       /* Gris claro de fondo */
+    --card-white: #ffffff;    /* Blanco puro para las tarjetas */
+    --primary-blue: #007bff;  /* Azul para botones y títulos */
+    --success-green: #28a745; /* Verde para 'Añadir' (como tu botón buscar) */
+    --text-main: #333333;     /* Gris muy oscuro para texto */
+    --text-muted: #6c757d;    /* Gris para párrafos secundarios */
+    --border-soft: #dee2e6;
 }
 
 body {
+    background-color: var(--bg-body) !important;
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top right, #0a192f, #020c1b);
-    color: var(--light-text);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
 }
 
-.login-container {
-    width: 100%;
-    max-width: 400px;
+.main-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================================
+   SIDEBAR (Lado izquierdo)
+   ========================================= */
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    border-right: 1px solid var(--border-soft);
     padding: 20px;
+    height: 100vh;
 }
 
-.login-box {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
+/* =========================================
+   CONTENIDO PRINCIPAL
+   ========================================= */
+.content {
+    flex: 1;
     padding: 40px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    text-align: center;
 }
 
-.logo-container {
-    margin: 0 auto 20px;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 20px var(--secondary);
-}
-
-.logo {
-    max-width: 60%;
-    filter: brightness(0) invert(1); /* Hace que el logo sea blanco */
-}
-
-h1 {
-    font-size: 1.5rem;
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #212529;
     margin-bottom: 5px;
-    letter-spacing: 1px;
 }
 
-header p {
-    font-size: 0.85rem;
-    color: var(--secondary);
+.page-header p {
+    color: var(--text-muted);
     margin-bottom: 30px;
-    text-transform: uppercase;
 }
 
-fieldset {
-    border: none;
-    padding: 0;
+/* =========================================
+   TARJETA BLANCA (Dashboard Card)
+   ========================================= */
+.dashboard-card {
+    background: var(--card-white) !important;
+    border-radius: 12px !important;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+    border: 1px solid #ffffff;
+    color: var(--text-main) !important;
 }
 
-legend {
-    display: none; /* Solo para accesibilidad */
+/* =========================================
+   FORMULARIO DE DISPONIBILIDAD (Grid)
+   ========================================= */
+.form-grid-dispo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end; /* Alinea botones con inputs */
 }
 
-label {
-    display: block;
-    text-align: left;
+.form-group-custom {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 180px;
+}
+
+.form-group-custom label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #495057;
     margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #8892b0;
 }
 
-input {
+/* INPUTS ESTILO LIMPIO */
+.input-custom {
     width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid transparent;
-    border-radius: 8px;
-    color: #fff;
-    outline: none;
-    transition: 0.3s;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    color: #495057;
     box-sizing: border-box;
 }
 
-input:focus {
-    border-color: var(--secondary);
-    background: rgba(255, 255, 255, 0.15);
+.input-custom:focus {
+    border-color: var(--primary-blue);
+    background-color: #fff;
+    outline: none;
 }
 
-.btn-login {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+/* BOTÓN AÑADIR (Verde Profesional) */
+.btn-primary-custom {
+    background-color: var(--success-green) !important;
+    color: white !important;
     border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    transition: background 0.2s;
 }
 
-.btn-login:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+.btn-primary-custom:hover {
+    background-color: #218838 !important;
 }
 
-.error-footer p {
-    color: #ff4d4d;
-    font-size: 0.85rem;
-    margin-top: 15px;
+/* =========================================
+   TABLA DE RESULTADOS
+   ======================================== */
+.table-container-custom {
+    margin-top: 30px;
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-custom th {
+    background-color: #f8f9fa;
+    color: #495057;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid var(--border-soft);
+    font-size: 14px;
+}
+
+.table-custom td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+/* BOTÓN ELIMINAR */
+.btn-delete-link {
+    color: #dc3545;
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid #dc3545;
+    padding: 5px 12px;
+    border-radius: 4px;
+}
+
+.btn-delete-link:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.my-4 {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 30px 0;
 }

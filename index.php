@@ -1,84 +1,120 @@
 <?php
 /**
  * ARCHIVO: index.php
- * Función: Enrutador principal del sistema Fundación Adventista
+ * Función: Enrutador principal y punto de entrada universal.
  */
 
+// 1. Configuración de Sesión y Errores
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// 2. Importación de archivos base
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
+require_once 'controllers/GestionController.php';
 
-// Iniciamos la base de datos
+// 3. Inicialización de la Base de Datos
 $database = new Database();
 $db = $database->getConnection();
 
-// Capturamos la acción (si no hay, por defecto es login)
-$action = isset($_GET['action']) ? $_GET['action'] : 'login';
+// 4. Capturar la acción y el rol (si existe)
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'login';
+$rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : null;
 
-// Lógica de enrutamiento básica
+// 5. Instanciar Controladores
+$authCtrl = new AuthController($db);
+$gestionCtrl = new GestionController($db);
+
+// 6. ENRUTADOR (SWITCH)
 switch ($action) {
+    
+    // --- ACCESO Y SEGURIDAD ---
     case 'login':
         include 'views/auth/login.php';
         break;
 
     case 'auth':
-        $controller = new AuthController($db);
-        $controller->login();
+        $authCtrl->login();
         break;
 
+    case 'logout':
+        $authCtrl->logout();
+        break;
 
-    case 'dashboard':
-    if (isset($_SESSION['rol'])) {
-        $rol = $_SESSION['rol'];
-        
-        // Mapeo de roles a carpetas
-        if ($rol == 1) $folder = 'admin';
-        elseif ($rol == 2) $folder = 'medico';
-        elseif ($rol == 3) $folder = 'pacient';
-        elseif ($rol == 4) $folder = 'secretaria';
-        else $folder = 'auth';
-
+  case 'dashboard':
+    if ($rol) {
+        $folders = [1 => 'admin', 2 => 'medico', 3 => 'pacient', 4 => 'secretaria'];
+        $folder = isset($folders[$rol]) ? $folders[$rol] : 'auth';
         $file = "views/$folder/dashboard.php";
-
+        
         if (file_exists($file)) {
             include $file;
         } else {
-            echo "Error: El archivo $file no existe. Revisa la mudanza.";
+            echo "Error: La vista $file no existe.";
         }
+    } else {
+        header("Location: index.php?action=login");
+        exit();
+    }
+    break;
+
+    // --- MÉDICO Y ADMIN ---
+case 'gestionar_disponibilidad':
+    if ($rol == 2 || $rol == 1) {
+        $gestionCtrl->disponibilidad();
     } else {
         header("Location: index.php?action=login");
     }
     break;
 
-    case 'logout':
-        $controller = new AuthController($db);
-        $controller->logout();
+
+case 'guardar_disponibilidad': 
+    if ($rol == 2 || $rol == 1) {
+        $gestionCtrl->guardarDisponibilidad();
+    } else {
+        header("Location: index.php?action=login");
+    }
+    break;
+
+
+    case 'buscar_paciente':
+        if ($rol == 2 || $rol == 4 || $rol == 1) {
+            $gestionCtrl->buscarPaciente();
+        } else {
+            header("Location: index.php?action=login");
+        }
         break;
 
+    // --- HISTORIAL (PACIENTE Y MÉDICO) ---
+    case 'historial':
+        if ($rol == 3 || $rol == 2) {
+            $gestionCtrl->historial();
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
+
+    // --- ADMINISTRADOR (ROL 1) ---
+    case 'usuarios':
+        if ($rol == 1) {
+            $gestionCtrl->gestionarUsuarios();
+        } else {
+            header("Location: index.php?action=login");
+        }
+        break;
+
+    // --- REGISTRO ---
     case 'registro':
         include 'views/auth/registro.php';
         break;
 
     case 'register_post':
-        $auth = new AuthController($db);
-        $auth->registrar();
+        $authCtrl->registrar();
         break;
 
-        case 'citas':
-    require_once 'controllers/GestionController.php';
-    $controller = new GestionController($db);
-    $controller->citas();
-    break;
-
-    case 'historial':
-    require_once 'controllers/GestionController.php';
-    $controller = new GestionController($db);
-    $controller->historial();
-    break;
-
+    // --- POR DEFECTO ---
     default:
-        include 'views/auth/login.php';
+        header("Location: index.php?action=login");
         break;
-
-
 }
