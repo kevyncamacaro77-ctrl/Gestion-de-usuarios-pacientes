@@ -17,11 +17,11 @@
             </header>
 
             <div class="dashboard-card"> 
-                <form action="index.php?action=guardarDisponibilidad" method="POST">
+                <form action="index.php?action=guardarDisponibilidad" method="POST" id="form-disponibilidad">
                     <div class="form-grid-dispo">
                         <div class="form-group-custom">
                             <label><i class="fas fa-calendar-day"></i> Fecha de Atención</label>
-                            <input type="date" name="fecha" required class="input-custom">
+                            <input type="date" name="fecha" required class="input-custom" min="<?= date('Y-m-d') ?>">
                         </div>
 
                         <div class="form-group-custom">
@@ -41,7 +41,6 @@
                         </div>
                     </div>
                 </form>
-
                 <hr class="separator">
 
                 <h3><i class="fas fa-list-ul"></i> Horarios Configurados</h3>

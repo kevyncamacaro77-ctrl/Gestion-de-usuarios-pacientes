@@ -69,9 +69,18 @@ case 'gestionar_disponibilidad':
     break;
 
 
-case 'guardar_disponibilidad': 
+case 'guardarDisponibilidad': 
     if ($rol == 2 || $rol == 1) {
         $gestionCtrl->guardarDisponibilidad();
+    } else {
+        header("Location: index.php?action=login");
+    }
+    break;
+
+    // --- ACCIÓN PARA ELIMINAR ---
+case 'eliminar_horario':
+    if ($rol == 2 || $rol == 1) {
+        $gestionCtrl->eliminarHorario();
     } else {
         header("Location: index.php?action=login");
     }
@@ -113,7 +122,46 @@ case 'guardar_disponibilidad':
         $authCtrl->registrar();
         break;
 
-    // --- POR DEFECTO ---
+        
+case 'citas':
+    if ($rol) {
+        $gestionCtrl->citas();
+    } else {
+        header("Location: index.php?action=login");
+    }
+    break;
+
+case 'citas_medico':
+    if ($rol == 2 || $rol == 1 || $rol == 4) {
+        $gestionCtrl->citas(); // Llamamos a la función que ya tienes en el controlador
+    } else {
+        header("Location: index.php?action=login");
+    }
+    break;
+
+// --- LISTADO DE PACIENTES ---
+case 'mis_pacientes':
+    if ($rol == 2 || $rol == 1 || $rol == 4) {
+        // Asegúrate de tener esta función en tu GestionController
+        $gestionCtrl->buscarPaciente(); 
+    } else {
+        header("Location: index.php?action=login");
+    }
+    break;
+
+case 'nueva_consulta':
+    $gestionCtrl->mostrarConsulta();
+    break;
+
+case 'guardar_consulta':
+    $gestionCtrl->guardarConsulta();
+    break;
+
+case 'editar_consulta':
+    $gestionCtrl->mostrarConsulta(); // Usamos la misma función porque ella detecta el ID
+    break;
+
+    
     default:
         header("Location: index.php?action=login");
         break;

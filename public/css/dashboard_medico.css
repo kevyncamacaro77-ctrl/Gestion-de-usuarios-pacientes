@@ -427,3 +427,195 @@ header p {
     border-radius: 20px;
     font-weight: 600;
 }
+
+/* public/css/dashboard_medico.css */
+
+/* Contenedor principal del Sidebar */
+.sidebar-medico {
+    background-color: #f0f9ff; /* Un azul muy claro y suave de fondo */
+    color: #0369a1; /* Texto azul oscuro para contraste */
+    border-right: 1px solid #e0f2fe; /* Borde sutil */
+}
+
+/* Título de la sección del Sidebar (ej: MÉDICO) */
+.sidebar-logo h2 {
+    color: #007bff; /* Azul primario para el título */
+}
+
+/* Lista de navegación */
+.sidebar-nav ul li a {
+    color: #0369a1; /* Color de texto predeterminado para los links */
+    transition: all 0.3s ease; /* Transición suave */
+    border-radius: 8px; /* Bordes redondeados */
+    margin: 4px 8px; /* Espaciado */
+}
+
+/* Efecto Hover y Enlace Activo */
+.sidebar-nav ul li a:hover,
+.sidebar-nav ul li a.active {
+    background-color: #e0f2fe; /* Azul claro para el fondo al pasar el mouse o estar activo */
+    color: #007bff; /* Azul más intenso para el texto */
+    font-weight: 600; /* Texto ligeramente más grueso */
+}
+
+/* Botón de Cerrar Sesión */
+.btn-logout {
+    border: 1px solid #007bff; /* Borde azul */
+    color: #007bff; /* Texto azul */
+    border-radius: 20px; /* Bordes muy redondeados */
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #007bff; /* Fondo azul al hover */
+    color: white; /* Texto blanco al hover */
+}
+
+/* Cuadrícula del formulario */
+.form-grid-consulta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* Historial */
+.history-section {
+    margin-top: 40px;
+}
+
+.history-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.history-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid #007bff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #0369a1;
+}
+
+/* Botones específicos */
+.btn-primary {
+    background: #007bff;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-danger {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+/* --- ESTILOS MÓDULO CONSULTA --- */
+/* --- ESTILOS MÓDULO CONSULTA EXPANDIDO --- */
+
+.content {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.full-width-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    padding: 35px;
+    width: 100%; /* Ocupa todo el espacio restante */
+    box-sizing: border-box;
+    flex-grow: 1; /* Permite que la tarjeta crezca si hay poco contenido */
+    margin-top: 10px;
+}
+
+.form-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 25px;
+}
+
+.full-row {
+    grid-column: span 2; /* Para elementos que deben ocupar todo el ancho dentro del form */
+}
+
+/* Estilos de inputs para que se vean modernos */
+.custom-input, .custom-textarea, .custom-select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus, .custom-textarea:focus, .custom-select:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0,123,255,0.1);
+}
+
+.custom-textarea {
+    min-height: 150px;
+    resize: none;
+}
+
+/* Botonera CRUD */
+.crud-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-main {
+    background: #007bff;
+    color: white;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.btn-main:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 14px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+}

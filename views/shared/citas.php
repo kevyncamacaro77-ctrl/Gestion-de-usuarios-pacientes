@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Agenda | Clínica Adventista</title>
-    <link rel="stylesheet" href="./public/css/dashboard.css">
+    <link rel="stylesheet" href="./public/css/dashboard_medico.css">
 </head>
 <body>
     <div class="main-container">

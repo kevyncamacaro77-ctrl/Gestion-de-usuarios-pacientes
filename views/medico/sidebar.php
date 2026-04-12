@@ -38,6 +38,13 @@ if (!isset($_SESSION['rol'])) {
                     <span>👥</span> Mis Pacientes
                 </a>
             </li>
+
+            <li>
+                <a href="index.php?action=nueva_consulta">
+                    <span>📝</span> Agregar Consulta
+                </a>
+            </li>
+
         </ul>
     </nav>
 
