@@ -12,6 +12,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // 2. Importación de archivos base (Controladores y DB)
+require_once 'controllers/MedicoController.php';
+require_once 'controllers/CitaController.php';
 require_once 'config/db.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/GestionController.php';
@@ -29,6 +31,8 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : null;
 $authCtrl = new AuthController($db);
 $gestionCtrl = new GestionController($db);
 $dashboardCtrl = new DashboardController($db); // Instanciamos el gestor de tableros
+$medicoCtrl = new MedicoController($db);
+$citaCtrl = new CitaController($db);
 
 // 6. ENRUTADOR (SWITCH)
 switch ($action) {
@@ -143,6 +147,17 @@ switch ($action) {
         }
         break;
 
+        case 'getMedicosPorEspecialidad':
+        $medicoCtrl->getMedicosPorEspecialidad();
+        break;
+
+        case 'getHorariosDisponibles':
+        $medicoCtrl->getHorariosDisponibles();
+        break;
+
+        case 'guardar_cita': 
+        $citaCtrl->guardarCita(); 
+        break;
 
     // --- POR DEFECTO ---
     default:

@@ -45,4 +45,14 @@ class Cita {
         $sql = "DELETE FROM cita WHERE id_cita = :id";
         return $this->db->prepare($sql)->execute(['id' => $id]);
     }
+
+  public function index() {
+    // Consulta exacta a tu tabla
+    $sql = "SELECT id_especialidad, nombre_especialidad FROM especialidad";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    
+    // Retornamos el array para que el controlador lo reciba
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

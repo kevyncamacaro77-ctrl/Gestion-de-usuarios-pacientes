@@ -83,21 +83,27 @@ class GestionController {
     }
 
     public function citas() {
-    if (!isset($_SESSION['user_id'])) { 
-        header("Location: index.php?action=login"); 
-        exit(); 
-    }
-    
-    $rol = $_SESSION['rol'];
-    $id = $_SESSION['user_id'];
+        if (!isset($_SESSION['user_id'])) { 
+            header("Location: index.php?action=login"); 
+            exit(); 
+        }
+        
+        $rol = $_SESSION['rol'];
+        $id = $_SESSION['user_id'];
 
-    if ($rol == 1 || $rol == 4) {
-        $citas = $this->citaModel->listarTodo();
-    } else {
-        $citas = $this->citaModel->listarPorUsuario($id, $rol);
-    }
-    
-    include 'views/shared/citas.php';
+        // --- ESTA ES LA LÍNEA QUE TE FALTA ---
+        // Llamamos al método index() del modelo para traer "Oftalmología", etc.
+        $especialidad = $this->citaModel->index(); 
+        // -------------------------------------
+
+        if ($rol == 1 || $rol == 4) {
+            $citas = $this->citaModel->listarTodo();
+        } else {
+            $citas = $this->citaModel->listarPorUsuario($id, $rol);
+        }
+        
+        // Ahora que $especialidad y $citas tienen datos, cargamos la vista
+        include 'views/shared/citas.php';
     }
 
 public function buscarPaciente() {
