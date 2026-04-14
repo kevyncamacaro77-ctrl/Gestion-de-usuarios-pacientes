@@ -1,96 +1,88 @@
-/* public/css/shared.css */
-
-/* Contenedor del Modal */
-.modal-custom {
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px); /* Efecto moderno */
-    display: none;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.3s ease;
-}
-
-/* Caja de contenido */
-.modal-content {
-    background: #1a222d;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 25px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-/* Inputs y Selects */
-.modal-content .form-control {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    background: #0f172a;
-    color: white;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    outline: none;
-}
-
-.modal-content .form-control:focus {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
-}
-
-/* Animación de entrada */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* =========================================
+   VARIABLES GLOBALES (Paleta Clínica)
+   ========================================= */
+:root {
+    --clinic-blue: #007bff;         /* Azul Médico/Adventista */
+    --clinic-blue-hover: #0069d9;   /* Azul más oscuro */
+    --bg-modal: #ffffff;            /* Fondo blanco puro para modales */
+    --text-main: #2c3e50;           /* Texto principal oscuro para legibilidad */
+    --text-muted: #6c757d;          /* Texto secundario gris */
+    --border-light: #e9ecef;        /* Bordes suaves */
+    --input-bg: #f8f9fa;            /* Fondo de inputs gris claro */
+    --primary-cyan: #00f2ff;        /* Cyan para acentos en modo oscuro */
 }
 
 /* =========================================
-   MODAL CLÍNICO LUMINOSO (Views Shared)
+   ESTILOS GENERALES DE TABLAS (VISIBILIDAD)
    ========================================= */
-:root {
-    --clinic-blue: #007bff;        /* Azul Médico/Adventista */
-    --clinic-blue-hover: #0069d9;  /* Azul más oscuro para hover */
-    --bg-modal: #ffffff;           /* Fondo blanco puro */
-    --text-main: #2c3e50;          /* Texto principal oscuro pero suave */
-    --text-muted: #6c757d;          /* Texto secundario gris */
-    --border-light: #e9ecef;       /* Bordes muy suaves */
-    --input-bg: #f8f9fa;           /* Fondo de inputs gris muy claro */
+
+/* Forzamos a que el texto dentro de las tablas sea visible */
+table.table-custom, table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-main) !important; /* Evita que el texto sea blanco */
+    background: transparent;
 }
 
-/* Contenedor del Modal */
+table td {
+    padding: 15px 20px;
+    color: var(--text-main) !important; /* Asegura color oscuro en celdas */
+    vertical-align: middle;
+}
+
+table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 15px 20px;
+}
+
+/* Status Pill (El óvalo del estado) */
+.status-pill {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(0, 123, 255, 0.1);
+    color: var(--clinic-blue) !important;
+    display: inline-block;
+}
+
+/* =========================================
+   MODAL CLÍNICO LUMINOSO
+   ========================================= */
+
+/* Contenedor de fondo (Overlay) */
 .modal-custom {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro suave */
-    backdrop-filter: blur(5px);      /* Efecto desenfoque moderno */
-    display: none;                  /* Oculto por defecto */
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscurecido */
+    backdrop-filter: blur(5px);      /* Efecto desenfoque */
+    display: none;                  /* Se activa por JS */
     justify-content: center;
     align-items: center;
     z-index: 1000;
     animation: fadeInModal 0.3s ease;
 }
 
-/* Caja de Contenido (Clínica) */
+/* Caja de Contenido Blanca */
 .modal-content {
     background: var(--bg-modal);
     padding: 30px;
-    border-radius: 16px;             /* Bordes más redondeados */
-    width: 90%;
+    border-radius: 16px;
+    width: 95%;
     max-width: 500px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15); /* Sombra suave pero profunda */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     border: 1px solid var(--border-light);
     color: var(--text-main);
     font-family: 'Inter', 'Segoe UI', sans-serif;
+    position: relative;
 }
 
-/* Encabezado */
+/* Encabezado del Modal */
 .modal-header-custom {
     display: flex;
     justify-content: space-between;
@@ -102,27 +94,27 @@
 
 .modal-header-custom h3 {
     margin: 0;
-    color: var(--clinic-blue);      /* Título en azul médico */
+    color: var(--clinic-blue);
     font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.modal-header-custom .btn-close-modal {
+.btn-close-modal {
     background: none;
     border: none;
     color: var(--text-muted);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    transition: color 0.2s;
+    line-height: 1;
 }
 
-.modal-header-custom .btn-close-modal:hover {
-    color: var(--text-main);
+.btn-close-modal:hover {
+    color: #ff4d4d;
 }
 
-/* Formularios y Etiquetas */
+/* Formularios dentro del Modal */
 .modal-content label {
     display: block;
     margin-bottom: 8px;
@@ -131,92 +123,109 @@
     color: var(--text-main);
 }
 
-/* Inputs y Selects Estilo Limpio */
 .modal-content select, 
-.modal-content input[type="date"], 
-.modal-content input[type="time"] {
+.modal-content input {
     width: 100%;
     padding: 12px;
-    background: var(--input-bg);    /* Fondo claro */
+    margin-bottom: 15px;
+    background: var(--input-bg);
     border: 1px solid var(--border-light);
     border-radius: 8px;
     color: var(--text-main);
     font-size: 1rem;
     box-sizing: border-box;
-    transition: all 0.2s;
 }
 
-.modal-content select:focus, 
-.modal-content input:focus {
+.modal-content select:focus {
     outline: none;
     border-color: var(--clinic-blue);
-    background: #fff;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-/* Fila de Fecha y Hora */
-.form-row-custom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-/* Caja de Información (Aviso 40 min) */
+/* Caja de Información Azul */
 .info-box-custom {
-    background: rgba(0, 123, 255, 0.05); /* Azul muy suave */
+    background: rgba(0, 123, 255, 0.05);
     color: #0c5460;
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
-    border-left: 4px solid var(--clinic-blue); /* Borde acento azul */
-    margin-bottom: 25px;
-    font-size: 0.9rem;
+    border-left: 4px solid var(--clinic-blue);
+    margin: 15px 0 25px 0;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* EL BOTÓN BONITO (Confirmar Cita) */
+/* Botón Confirmar */
 .btn-submit-modal {
     width: 100%;
-    padding: 15px;
-    background: var(--clinic-blue);   /* Azul principal */
+    padding: 14px;
+    background: var(--clinic-blue);
     color: #ffffff;
     border: none;
     border-radius: 10px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
 .btn-submit-modal:hover {
-    background: var(--clinic-blue-hover); /* Azul más oscuro al hover */
-    transform: translateY(-2px);       /* Efecto levitación suave */
-    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+    background: var(--clinic-blue-hover);
+    transform: translateY(-1px);
 }
 
-@keyframes fadeInModal {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+/* Botón de Agendar en Dashboard */
 .btn-agendar-principal {
-    background: #007bff;
+    background: var(--clinic-blue);
     color: white !important;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    display: inline-flex;
+    text-decoration: none;
+    display: flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.3s ease;
-    text-decoration: none;
 }
 
-.btn-agendar-principal:hover {
-    background: #0056b3;
+/* Animaciones */
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Unificamos la fuente y el color negro para que se vea como tu captura */
+.table-custom, .data-table {
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    color: #000000 !important;
+    border-top: 1px solid #ccc;
+}
+
+/* Encabezados en gris oscuro como en tu imagen */
+.table-custom th {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+/* Celdas en negro puro */
+.table-custom td {
+    color: #000000 !important;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+/* El óvalo de 'ocupado' en celeste claro */
+.status-pill {
+    background-color: #e0fbff;
+    color: #00d4ff !important;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.75rem;
 }

@@ -5,6 +5,7 @@
     <title>Panel Paciente | Clínica Adventista</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/Gestion_medica/public/css/dashboard_paciente.css">
+    <link rel="stylesheet" href="/Gestion_medica/public/css/shared.css">
 </head>
 <body>
     <div class="main-container">
@@ -43,26 +44,35 @@
             <div class="dashboard-card-full">
                 <div class="section-title">
                     <i class="fas fa-stream"></i>
-                    <h3>Resumen de Actividad Reciente</h3>
+                    <h3 style="color: #000;">Resumen de Actividad Reciente</h3>
                 </div>
                 
                 <?php if (!empty($proximas_citas)): ?>
                     <div class="table-container">
-                        <table>
+                        <table class="table-custom" style="width: 100%; border-collapse: collapse; background: white;">
                             <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Motivo</th>
-                                    <th>Acciones</th>
+                                <tr style="background: #f8f9fa;">
+                                    <th style="padding: 15px; color: #333;">Fecha / Hora</th>
+                                    <th style="padding: 15px; color: #333;">Motivo</th>
+                                    <th style="padding: 15px; color: #333;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($proximas_citas as $cita): ?>
-                                    <tr>
-                                        <td><span class="date-badge"><?= date('d/m/Y', strtotime($cita->fecha_creacion)) ?></span></td>
-                                        <td><?= htmlspecialchars($cita->motivo) ?></td>
-                                        <td class="text-center">
-                                            <a href="#" class="btn-cancel"><i class="fas fa-calendar-times"></i></a>
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 15px;">
+                                            <strong style="color: #000; display: block;">
+                                                <?= date('d/m/Y', strtotime($cita->fecha_creacion)) ?>
+                                            </strong>
+                                            <span style="color: #666; font-size: 0.85rem;">
+                                                <?= date('h:i A', strtotime($cita->fecha_creacion)) ?>
+                                            </span>
+                                        </td>
+                                        <td style="padding: 15px; color: #000;">
+                                            <?= htmlspecialchars($cita->motivo) ?>
+                                        </td>
+                                        <td style="padding: 15px;">
+                                            <span style="color: #999; font-size: 0.85rem;">Sin acciones</span>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -70,10 +80,12 @@
                         </table>
                     </div>
                 <?php else: ?>
-                    <div class="empty-state">
-                        <i class="far fa-calendar-minus"></i>
-                        <p>Aún no tienes citas programadas en el sistema.</p>
-                        <a href="index.php?action=citas" class="btn-schedule">Agendar mi primera cita</a>
+                    <div class="empty-state" style="text-align: center; padding: 40px;">
+                        <i class="far fa-calendar-minus" style="font-size: 3rem; color: #ccc;"></i>
+                        <p style="color: #666; margin-top: 10px;">Aún no tienes citas programadas en el sistema.</p>
+                        <a href="index.php?action=citas" class="btn-agendar-principal" style="display: inline-block; margin-top: 15px;">
+                            Agendar mi primera cita
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>

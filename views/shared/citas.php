@@ -64,78 +64,77 @@ if (!isset($especialidad) || empty($especialidad)) {
             <div class="<?= ($rol == 3) ? 'dashboard-card-full' : 'card' ?>" 
                  style="background: var(--glass); border-radius: 15px; overflow: hidden; border: 1px solid var(--border);">
                 
-                <table class="<?= ($rol == 3) ? 'table-custom' : 'data-table' ?>" style="width: 100%; border-collapse: collapse; color: white;">
-                    <thead>
-                        <tr style="background: rgba(255,255,255,0.05); text-align: left;">
-                            <th style="padding: 20px;">Fecha / Hora</th>
-                            <?php if ($rol != 3): ?> <th>Paciente</th> <?php endif; ?>
-                            <?php if ($rol != 2): ?> <th>Médico</th> <?php endif; ?>
-                            <th>Motivo</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($citas)): ?>
-                            <?php foreach($citas as $c): 
-                                $fecha_cita = strtotime($c->fecha);
-                                $horas_dif = ($fecha_cita - time()) / 3600;
-                                // Restricción: Médicos solo cancelan si faltan más de 12 horas
-                                $bloqueo_medico = ($rol == 2 && $horas_dif < 12);
-                            ?>
-                            <tr style="border-bottom: 1px solid var(--border);">
-                                <td style="padding: 20px;">
-                                    <strong><?= date('d/m/Y', $fecha_cita) ?></strong>
-                                    <div style="color: var(--primary-cyan); font-size: 0.9rem;"><?= date('h:i A', $fecha_cita) ?></div>
-                                </td>
-                                
-                                <?php if ($rol != 3): ?> 
-                                    <td><?= htmlspecialchars($c->nombre_paciente) ?></td> 
-                                <?php endif; ?>
-                                
-                                <?php if ($rol != 2): ?> 
-                                    <td><?= htmlspecialchars($c->nombre_medico) ?></td> 
-                                <?php endif; ?>
+               <table class="<?= ($rol == 3) ? 'table-custom' : 'data-table' ?>" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background: rgba(0, 0, 0, 0.03); text-align: left;">
+            <th style="padding: 20px;">Fecha / Hora</th>
+            <?php if ($rol != 3): ?> <th>Paciente</th> <?php endif; ?>
+            <?php if ($rol != 2): ?> <th>Médico</th> <?php endif; ?>
+            <th>Motivo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($citas)): ?>
+            <?php foreach($citas as $c): 
+                $fecha_cita = strtotime($c->fecha);
+                $horas_dif = ($fecha_cita - time()) / 3600;
+                $bloqueo_medico = ($rol == 2 && $horas_dif < 12);
+            ?>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 20px;">
+                    <strong style="display: block; color: #000;"><?= date('d/m/Y', $fecha_cita) ?></strong>
+                    <span style="color: #666; font-size: 0.9rem;"><?= date('h:i A', $fecha_cita) ?></span>
+                </td>
+                
+                <?php if ($rol != 3): ?> 
+                    <td><?= htmlspecialchars($c->paciente ?? 'N/A') ?></td> 
+                <?php endif; ?>
+                
+                <?php if ($rol != 2): ?> 
+                    <td><?= htmlspecialchars($c->nombre_medico ?? $c->medico ?? 'No asignado') ?></td> 
+                <?php endif; ?>
 
-                                <td><?= htmlspecialchars($c->motivo) ?></td>
+                <td><?= htmlspecialchars($c->motivo) ?></td>
 
-                                <td>
-                                    <span class="status-pill" style="padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; background: rgba(0,242,255,0.1); color: var(--primary-cyan);">
-                                        <?= $c->estado ?>
-                                    </span>
-                                </td>
+                <td>
+                    <span class="status-pill">
+                        <?= htmlspecialchars($c->estado ?? $c->estatus ?? 'Registrada') ?>
+                    </span>
+                </td>
 
-                                <td style="padding: 20px;">
-                                    <div style="display: flex; gap: 15px; align-items: center;">
-                                        <?php if($rol == 2): // VISTA MÉDICO ?>
-                                            <a href="index.php?action=atender&id=<?= $c->id_cita ?>" title="Atender Consulta" style="color: #28a745;"><i class="fas fa-stethoscope"></i></a>
-                                            <?php if(!$bloqueo_medico): ?>
-                                                <a href="index.php?action=cancelar&id=<?= $c->id_cita ?>" title="Cancelar" style="color: #dc3545;"><i class="fas fa-times-circle"></i></a>
-                                            <?php else: ?>
-                                                <span title="Bloqueado: faltan menos de 12h" style="opacity: 0.5; cursor: not-allowed;">🔒</span>
-                                            <?php endif; ?>
+                <td style="padding: 20px;">
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <?php if($rol == 2): // VISTA MÉDICO ?>
+                            <a href="index.php?action=atender&id=<?= $c->id_cita ?>" title="Atender" style="color: #28a745;"><i class="fas fa-stethoscope"></i></a>
+                            <?php if(!$bloqueo_medico): ?>
+                                <a href="index.php?action=cancelar&id=<?= $c->id_cita ?>" title="Cancelar" style="color: #dc3545;"><i class="fas fa-times-circle"></i></a>
+                            <?php else: ?>
+                                <span title="Bloqueado" style="opacity: 0.5; cursor: not-allowed;">🔒</span>
+                            <?php endif; ?>
 
-                                        <?php elseif($rol == 4 || $rol == 1): // VISTA SECRETARIA / ADMIN ?>
-                                            <a href="index.php?action=editar&id=<?= $c->id_cita ?>" title="Editar" style="color: #ffc107;"><i class="fas fa-edit"></i></a>
-                                            <a href="index.php?action=eliminar&id=<?= $c->id_cita ?>" title="Eliminar" style="color: #dc3545;" onclick="return confirm('¿Seguro que desea eliminar esta cita?')"><i class="fas fa-trash"></i></a>
+                        <?php elseif($rol == 4 || $rol == 1): // VISTA ADMIN/SEC ?>
+                            <a href="index.php?action=editar&id=<?= $c->id_cita ?>" title="Editar" style="color: #ffc107;"><i class="fas fa-edit"></i></a>
+                            <a href="index.php?action=eliminar&id=<?= $c->id_cita ?>" title="Eliminar" style="color: #dc3545;" onclick="return confirm('¿Eliminar cita?')"><i class="fas fa-trash"></i></a>
 
-                                        <?php else: // VISTA PACIENTE ?>
-                                            <span style="color: var(--text-muted); font-size: 0.8rem;">Sin acciones</span>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 60px; color: var(--text-muted);">
-                                    <i class="fas fa-calendar-times" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
-                                    No hay citas registradas en el sistema.
-                                </td>
-                            </tr>
+                        <?php else: // VISTA PACIENTE ?>
+                            <span style="color: #999; font-size: 0.8rem;">Sin acciones</span>
                         <?php endif; ?>
-                    </tbody>
-                </table>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 60px; color: #000;">
+                    <i class="fas fa-calendar-times" style="font-size: 2rem; display: block; margin-bottom: 10px; color: #ccc;"></i>
+                    No hay citas registradas en el sistema.
+                </td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
             </div>
         </main>
     </div>
