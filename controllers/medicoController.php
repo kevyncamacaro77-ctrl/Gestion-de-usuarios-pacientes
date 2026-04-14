@@ -56,4 +56,27 @@ class MedicoController {
         exit;
     }
 
+    public function guardarConsulta() {
+    $tipo = $_POST['tipo_consulta']; // Asegúrate que tu select envíe esto
+    $id_cita = $_POST['id_cita'] ?? null;
+
+    // VALIDACIÓN: Si NO es emergencia y NO hay cita seleccionada
+    if ($tipo !== 'Emergencia' && empty($id_cita)) {
+        // Redirigir con error si tu sistema tiene mensajes flash
+        header("Location: index.php?action=nueva_consulta&error=cita_obligatoria");
+        exit();
+    }
+
+    // 1. Guardar la consulta en la DB (Tu código actual)
+    $this->model->insertarConsulta($_POST);
+
+    // 2. Si venía de una cita, actualizar su estado para que no aparezca más como "Pendiente"
+    if (!empty($id_cita)) {
+        $this->db->prepare("UPDATE cita SET estado = 'Finalizada' WHERE id_cita = ?")
+                 ->execute([$id_cita]);
+    }
+    
+    header("Location: index.php?action=historial&success=1");
+}
+
 }

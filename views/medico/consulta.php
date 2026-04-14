@@ -1,7 +1,7 @@
 <?php
 // Datos de la consulta y control de roles
 $id_con = $consulta->idConsulta ?? '';
-$fecha_con = $consulta->fecha ?? date('Y-m-d'); // Toma la fecha actual si es nueva
+$fecha_con = $consulta->fecha ?? date('Y-m-d'); 
 $mot = $consulta->motivo ?? '';
 $diag = $consulta->diagnostico ?? '';
 $recom = $consulta->recomendaciones ?? '';
@@ -19,6 +19,10 @@ $es_admin = ($rol == 1);
     <title>Historia Clínica | Clínica Adventista</title>
     <link rel="stylesheet" href="./public/css/dashboard_medico.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .required-star { color: #dc3545; margin-left: 3px; }
+        .hidden-field { display: none; }
+    </style>
 </head>
 <body class="bg-light">
     <div class="main-container">
@@ -41,7 +45,7 @@ $es_admin = ($rol == 1);
             </header>
 
             <div class="full-width-card">
-                <form action="index.php?action=guardar_consulta" method="POST">
+                <form action="index.php?action=guardar_consulta" method="POST" id="formConsulta">
                     
                     <input type="hidden" name="idConsulta" value="<?= $id_con ?>">
 
@@ -58,6 +62,30 @@ $es_admin = ($rol == 1);
                     <?php endif; ?>
 
                     <div class="form-layout">
+                        <div class="form-group full-row">
+                            <label><i class="fas fa-info-circle"></i> Estado / Tipo de Atención</label>
+                            <select name="estado" id="estado_consulta" class="custom-select" onchange="validarTipoAtencion()">
+                                <option value="Finalizada" <?= $est == 'Finalizada' ? 'selected' : '' ?>>Consulta Normal (Finalizada)</option>
+                                <option value="Emergencia" <?= $est == 'Emergencia' ? 'selected' : '' ?>>Emergencia (Sin cita previa)</option>
+                                <option value="Pendiente" <?= $est == 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-row" id="grupo_cita">
+                            <label><i class="fas fa-calendar-check"></i> Vincular Cita Pendiente <span class="required-star" id="estrella_cita">*</span></label>
+                            <select name="id_cita" id="id_cita" class="custom-select">
+                                <option value="">-- Seleccione la cita que está atendiendo --</option>
+                                <?php if(isset($citas_pendientes) && !empty($citas_pendientes)): ?>
+                                    <?php foreach($citas_pendientes as $cp): ?>
+                                        <option value="<?= $cp->id_cita ?>"><?= date('d/m/Y', strtotime($cp->fecha)) ?> - <?= htmlspecialchars($cp->motivo) ?></option>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <option value="" disabled>No hay citas pendientes para este paciente</option>
+                                <?php endif; ?>
+                            </select>
+                            <small id="msg_ayuda" style="color: #666;">Si no es emergencia, debe seleccionar una cita para poder guardar.</small>
+                        </div>
+
                         <div class="form-group">
                             <label><i class="fas fa-calendar-day"></i> Fecha de la Consulta</label>
                             <input type="date" name="fecha" class="custom-input" value="<?= $fecha_con ?>" required>
@@ -66,16 +94,6 @@ $es_admin = ($rol == 1);
                         <div class="form-group">
                             <label><i class="fas fa-comment-medical"></i> Motivo de la Consulta</label>
                             <input type="text" name="motivo" class="custom-input" value="<?= $mot ?>" placeholder="Ej: Dolor abdominal..." required>
-                        </div>
-
-                        <div class="form-group full-row">
-                            <label><i class="fas fa-info-circle"></i> Estado de la Consulta</label>
-                            <select name="estado" class="custom-select">
-                                <option value="Finalizada" <?= $est == 'Finalizada' ? 'selected' : '' ?>>Finalizada</option>
-                                <option value="Emergencia" <?= $est == 'Emergencia' ? 'selected' : '' ?>>Emergencia</option>
-                                <option value="Pendiente" <?= $est == 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                                <option value="Cancelada" <?= $est == 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
-                            </select>
                         </div>
 
                         <div class="form-group">
@@ -92,7 +110,7 @@ $es_admin = ($rol == 1);
                     <div class="crud-actions">
                         <div class="primary-actions">
                             <?php if ($puede_editar): ?>
-                                <button type="submit" class="btn-main">
+                                <button type="submit" class="btn-main" id="btnGuardar">
                                     <i class="fas fa-save"></i> <?= $id_con ? 'Actualizar Consulta' : 'Registrar Consulta' ?>
                                 </button>
                             <?php endif; ?>
@@ -102,7 +120,7 @@ $es_admin = ($rol == 1);
                             <a href="index.php?action=eliminar_consulta&id=<?= $id_con ?>" 
                                class="btn-delete" 
                                onclick="return confirm('¿Estás seguro de eliminar permanentemente esta consulta?')">
-                                <i class="fas fa-trash-alt"></i> Eliminar Registro
+                                 <i class="fas fa-trash-alt"></i> Eliminar Registro
                             </a>
                         <?php endif; ?>
                     </div>
@@ -110,5 +128,7 @@ $es_admin = ($rol == 1);
             </div>
         </main>
     </div>
+
+   <script src="/Gestion_medica/public/js/modal_citas.js"></script>
 </body>
 </html>

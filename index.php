@@ -159,6 +159,14 @@ switch ($action) {
         $citaCtrl->guardarCita(); 
         break;
 
+        case 'nueva_consulta': // La acción del icono médico
+        $medicoController->mostrarFormularioConsulta();
+        break; // <--- SI FALTA ESTO, PASA AL SIGUIENTE Y TE CIERRA SESIÓN
+
+        case 'cancelar_cita': // La acción de la X roja
+        $citaController->cancelar($_GET['id']);
+        break; // <--- ESTE ES EL QUE SUELE FALTAR
+
     // --- POR DEFECTO ---
     default:
         header("Location: index.php?action=login");

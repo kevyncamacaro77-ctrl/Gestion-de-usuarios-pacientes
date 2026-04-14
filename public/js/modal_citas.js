@@ -106,4 +106,63 @@ function cargarHorarios(idMedico) {
                 selectCupo.innerHTML = '<option value="">Sin turnos disponibles por ahora</option>';
             }
         });
+
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const formConsulta = document.getElementById('formConsulta');
+    const estadoSelect = document.getElementById('estado_consulta');
+    const idCitaSelect = document.getElementById('id_cita');
+    const estrellaCita = document.getElementById('estrella_cita');
+    const msgAyuda = document.getElementById('msg_ayuda');
+
+    // Función que controla la obligatoriedad de la cita
+    function validarTipoAtencion() {
+        if (!estadoSelect || !idCitaSelect) return;
+
+        const estado = estadoSelect.value;
+
+        if (estado === 'Emergencia') {
+            // Caso Emergencia: La cita es opcional
+            idCitaSelect.required = false;
+            if (estrellaCita) estrellaCita.style.display = 'none';
+            if (msgAyuda) {
+                msgAyuda.innerText = "Modo Emergencia: La vinculación de cita es opcional.";
+                msgAyuda.style.color = "#28a745"; // Verde para indicar que está bien
+            }
+        } else {
+            // Caso Normal/Pendiente: La cita es obligatoria
+            idCitaSelect.required = true;
+            if (estrellaCita) estrellaCita.style.display = 'inline';
+            if (msgAyuda) {
+                msgAyuda.innerText = "Consulta Normal: Debe seleccionar una cita para finalizarla.";
+                msgAyuda.style.color = "#dc3545"; // Rojo para advertir obligatoriedad
+            }
+        }
+    }
+
+    // Escuchar cambios en el selector de estado
+    if (estadoSelect) {
+        estadoSelect.addEventListener('change', validarTipoAtencion);
+    }
+
+    // Validación final antes de enviar el formulario
+    if (formConsulta) {
+        formConsulta.onsubmit = function(e) {
+            const estado = estadoSelect.value;
+            const idCita = idCitaSelect.value;
+
+            // Si no es emergencia y no seleccionó cita, bloqueamos el envío
+            if (estado !== 'Emergencia' && idCita === "") {
+                e.preventDefault(); // Detiene el envío
+                alert("⚠️ Error: Para registrar una consulta normal debe seleccionar la cita previa del paciente.");
+                idCitaSelect.focus();
+                return false;
+            }
+            return true;
+        };
+    }
+
+    // Ejecutar una vez al cargar por si hay datos previos (ej: al editar)
+    validarTipoAtencion();
+});
