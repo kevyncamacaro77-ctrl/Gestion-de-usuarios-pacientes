@@ -78,5 +78,15 @@ class MedicoController {
     
     header("Location: index.php?action=historial&success=1");
 }
+public function cancelarCita($id) {
+    // Si el médico intenta cancelar, el modelo debe permitirlo
+    $resultado = $this->model->actualizarEstadoCita($id, 'Cancelada');
 
+    if ($resultado) {
+        header("Location: index.php?action=citas&success=cancelada");
+    } else {
+        header("Location: index.php?action=citas&error=error_cancelar");
+    }
+    exit();
+}
 }

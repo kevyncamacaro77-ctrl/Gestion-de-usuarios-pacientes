@@ -155,20 +155,34 @@ switch ($action) {
         $medicoCtrl->getHorariosDisponibles();
         break;
 
-        case 'guardar_cita': 
-        $citaCtrl->guardarCita(); 
-        break;
-
         case 'nueva_consulta': // La acción del icono médico
         $medicoController->mostrarFormularioConsulta();
         break; // <--- SI FALTA ESTO, PASA AL SIGUIENTE Y TE CIERRA SESIÓN
 
-        case 'cancelar_cita': // La acción de la X roja
-        $citaController->cancelar($_GET['id']);
-        break; // <--- ESTE ES EL QUE SUELE FALTAR
+       case 'guardar_cita': 
+        $citaCtrl->guardarCita(); 
+        break;
 
-    // --- POR DEFECTO ---
-    default:
-        header("Location: index.php?action=login");
+     case 'atender': // Cambié el nombre para que coincida con el icono del estetoscopio
+        if ($rol == 2 || $rol == 1) {
+            $gestionCtrl->mostrarConsulta(); 
+        }
+        break;
+
+     case 'cancelar_cita': 
+        // USAMOS $citaCtrl que es como lo definiste arriba
+        if (isset($_GET['id'])) {
+            $citaCtrl->cancelar($_GET['id']);
+        }
+        break; 
+
+ 
+        default:
+        // Si hay sesión, mándalo al dashboard, no al login, para evitar cierres molestos
+        if (isset($_SESSION['rol'])) {
+            header("Location: index.php?action=dashboard");
+        } else {
+            header("Location: index.php?action=login");
+        }
         break;
 }
