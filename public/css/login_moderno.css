@@ -1,0 +1,125 @@
+/* Importar fuente Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Puedes cambiar esta imagen por una de medicina o un fondo azul suave */
+    background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), 
+                url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=2053') no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.login-box {
+    position: relative;
+    width: 400px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.logo-container img {
+    width: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+}
+
+h2 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.input-group i {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 5px 10px 30px;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+    outline: none;
+    color: #fff;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.input-group label {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+/* Efecto al enfocar o si hay texto */
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: -15px;
+    left: 0;
+    font-size: 12px;
+    color: #38bdf8;
+}
+
+.input-group input:focus,
+.input-group input:valid {
+    border-bottom: 1.5px solid #38bdf8;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #0ea5e9;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background: #0284c7;
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+    transform: translateY(-2px);
+}
+
+.footer-text {
+    margin-top: 25px;
+    color: #fff;
+    font-size: 12px;
+    opacity: 0.8;
+}
