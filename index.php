@@ -16,7 +16,8 @@ $view = $_GET['view'] ?? 'login';
 
 // 3. LÓGICA DE ACCESO GLOBAL
 // Si no hay sesión y el usuario intenta acceder a algo que no sea el login, se redirige
-if (!isset($_SESSION['usuario']) && $view !== 'login') {
+// AHORA: Permitimos que 'login' Y 'registro_paciente' se vean sin estar logueado
+if (!isset($_SESSION['usuario']) && !in_array($view, ['login', 'registro_paciente'])) {
     header("Location: index.php?view=login");
     exit();
 }
@@ -83,8 +84,28 @@ switch ($view) {
         include 'views/layouts/footer.php';
         break;
 
-    case 'logout':
+         case 'logout':
         require_once 'views/logout.php';
+        break;
+
+        // Dentro del switch ($view) en index.php
+        case 'registro_paciente':
+        // Si se envió el formulario de registro, procesamos los datos
+        if (isset($_POST['btn_registrar_cuenta'])) {
+            $auth = new AuthController($db);
+            $resultado = $auth->registrarNuevoPaciente($_POST);
+            
+            if ($resultado === true) {
+                echo "<script>alert('¡Cuenta creada! Ahora puedes iniciar sesión.'); window.location='index.php?view=login';</script>";
+                exit();
+            } else {
+                echo "<script>alert('$resultado');</script>";
+            }
+        }
+
+        
+        // Cargamos la vista del formulario
+        require_once 'views/registro_paciente.php';
         break;
 
     default:

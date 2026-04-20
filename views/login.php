@@ -32,8 +32,15 @@
             <button type="submit" name="btn_login" class="login-btn">Ingresar</button>
         </form>
 
+        <div class="register-link" style="margin-top: 25px; text-align: center;">
+            <p style="color: rgba(255,255,255,0.7); font-size: 14px;">
+                ¿No tienes una cuenta? 
+                <a href="index.php?view=registro_paciente" style="...">Regístrate aquí</a>
+            </p>
+        </div>
+
         <div class="footer-note">
-            © 2026 Fundación Hospital Adventista
+        © 2026 Fundación Hospital Adventista
         </div>
     </div>
 </body>
