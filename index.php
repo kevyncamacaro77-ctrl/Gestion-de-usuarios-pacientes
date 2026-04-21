@@ -108,6 +108,19 @@ switch ($view) {
         require_once 'views/registro_paciente.php';
         break;
 
+        case 'paciente_dashboard':
+        // Seguridad básica: solo permitir si hay sesión de paciente
+        if (isset($_SESSION['rol']) && $_SESSION['rol'] == 4) {
+            include 'views/paciente_dashboard.php';
+        } else {
+            header("Location: index.php?view=login");
+        }
+        break;
+
+         case 'dashboard_general':
+        include 'views/dashboard_general.php';
+        break;
+
     default:
         // Si la vista no existe, redirige al login centralizado
         require_once 'views/login.php';

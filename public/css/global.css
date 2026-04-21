@@ -73,13 +73,12 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    /* Aquí forzamos que el fondo se vea en TODA la app */
+    background: url('../img/fondo_hospital.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
+    color: white;
 }
 
 section {

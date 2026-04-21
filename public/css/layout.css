@@ -1,0 +1,88 @@
+/* Archivo CSS para el diseño general del dashboard de pacientes */
+/* Importar fuente Poppins para que sea uniforme en todo el sitio */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+body {
+    min-height: 100vh;
+    /* Usamos exactamente el fondo del login moderno */
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
+                url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=2053') no-repeat !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    color: #ffffff;
+}
+
+.dashboard-container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    /* Efecto cristal (Glassmorphism) idéntico al login */
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 60px 40px;
+    background: transparent !important;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 12px;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    background: rgba(0, 210, 255, 0.2);
+    color: #00d2ff;
+}
+/* Estilos de los enlaces del menú */
+.nav-menu {
+    margin-top: 30px;
+}
+
+
+
+.nav-link i {
+    color: #00d2ff; /* Iconos en azul */
+}
+
+
+.btn-logout {
+    color: #ff4d4d;
+    margin-top: 30px;
+}
+
+.btn-logout i {
+    color: #ff4d4d;
+}
+

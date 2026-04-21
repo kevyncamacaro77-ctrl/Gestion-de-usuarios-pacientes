@@ -2,6 +2,7 @@
 // app/controllers/AuthController.php
 require_once __DIR__ . '/../models/Usuario.php';
 
+
 class AuthController {
     private $usuarioModel;
     private $conn;
@@ -10,24 +11,30 @@ class AuthController {
         $this->usuarioModel = new Usuario($db);
     }
 
-    public function login($nombre_usuario, $password) {
+        public function login($nombre_usuario, $password) {
         $user = $this->usuarioModel->buscarPorNombre($nombre_usuario);
 
         if ($user) {
-            // Validación de contraseña (mantenemos tu atajo temporal si lo deseas)
+            // Verifica la contraseña hash o el atajo temporal
             $password_valida = ($password === 'admin123') || password_verify($password, $user['contrasena']);
 
             if ($password_valida) {
+                // Verificamos si el usuario está activo
                 if ($user['Activo'] !== 'Si') {
                     return "Su cuenta se encuentra inactiva.";
                 }
 
-                // Guardamos todo en la sesión
+                // Guardamos datos clave en la sesión
                 $_SESSION['id_usuario'] = $user['id_usuario'];
                 $_SESSION['usuario'] = $user['nombre_usuario'];
-                $_SESSION['rol'] = $user['nombre_rol'];
-                
-                header("Location: index.php?view=dashboard");
+                $_SESSION['rol'] = $user['idrol']; // Guardamos el ID del rol para la lógica
+
+                // Redirección por Rol
+                if ($user['idrol'] == 4) { // 4 es el ID de Paciente
+                    header("Location: index.php?view=paciente_dashboard");
+                } else {
+                    header("Location: index.php?view=dashboard_general");
+                }
                 exit();
             }
         }
