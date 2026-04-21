@@ -3,7 +3,7 @@
 
 ![Estatus del Proyecto](https://img.shields.io/badge/Estatus-Desarrollo%20Activo-green?style=for-the-badge)
 ![Licencia](https://img.shields.io/badge/Licencia-Acad%C3%A9mica-orange?style=for-the-badge)
-![IUJO](https://img.shields.io/badge/Instituci%C3%B3n-IUJO%20Lara-blue?style=for-the-badge)
+
 
 Este proyecto nace como una solución tecnológica para la **Fundación Hospital Adventista de Venezuela**, específicamente para el área de **Oftalmología**. El objetivo es digitalizar y automatizar el control de pacientes, agendas médicas y resultados técnicos de exámenes oculares.
 
