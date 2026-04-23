@@ -42,13 +42,12 @@ h1, h2, h3, p {
     border-color: #38bdf8 !important; /* Azul cian del login */
 }
 
-/* Fuerza el color y tamaño de los símbolos decorativos */
 .action-card i {
-    font-size: 50px !important; /* Tamaño grande para que resalte */
-    color: #38bdf8 !important;  /* El azul brillante del login_moderno */
+    color: #38bdf8 !important; /* El azul cian de tu login moderno */
+    font-size: 45px !important;
     margin-bottom: 20px;
     display: inline-block;
-    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4)); /* Efecto de brillo */
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5)); /* Les da un brillo neón */
 }
 
 .action-card h3 {

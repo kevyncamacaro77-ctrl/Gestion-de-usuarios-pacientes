@@ -11,35 +11,47 @@ class AuthController {
         $this->usuarioModel = new Usuario($db);
     }
 
-        public function login($nombre_usuario, $password) {
-        $user = $this->usuarioModel->buscarPorNombre($nombre_usuario);
+                public function login($nombre_usuario, $password) {
+                        $user = $this->usuarioModel->buscarPorNombre($nombre_usuario);
 
-        if ($user) {
-            // Verifica la contraseña hash o el atajo temporal
-            $password_valida = ($password === 'admin123') || password_verify($password, $user['contrasena']);
+            if ($user) {        
+              // Verifica la contraseña hash o el atajo temporal
+                $password_valida = ($password === 'admin123') || password_verify($password, $user['contrasena']);
 
-            if ($password_valida) {
-                // Verificamos si el usuario está activo
-                if ($user['Activo'] !== 'Si') {
-                    return "Su cuenta se encuentra inactiva.";
-                }
+                if ($password_valida) {
+                    // Verificamos si el usuario está activo
+                    if ($user['Activo'] !== 'Si') {
+                        return "Su cuenta se encuentra inactiva.";
+                    }
 
-                // Guardamos datos clave en la sesión
-                $_SESSION['id_usuario'] = $user['id_usuario'];
-                $_SESSION['usuario'] = $user['nombre_usuario'];
-                $_SESSION['rol'] = $user['idrol']; // Guardamos el ID del rol para la lógica
+                    // Guardamos datos clave en la sesión
+                    $_SESSION['id_usuario'] = $user['id_usuario'];
+                    $_SESSION['usuario'] = $user['nombre_usuario'];
+                    $_SESSION['rol'] = $user['idrol']; 
 
-                // Redirección por Rol
-                if ($user['idrol'] == 4) { // 4 es el ID de Paciente
-                    header("Location: index.php?view=paciente_dashboard");
-                } else {
-                    header("Location: index.php?view=dashboard_general");
-                }
-                exit();
+                    // Redirección por Rol usando Switch
+                    switch ($user['idrol']) {
+                        case 1: // Administrador
+                            header("Location: index.php?view=dashboard_admin");
+                            break;
+                        case 2: // Secretaria / Enfermera
+                            header("Location: index.php?view=dashboard_secretaria");
+                            break;
+                        case 3: // Médico
+                            header("Location: index.php?view=dashboard_medico");
+                            break;
+                        case 4: // Paciente
+                            header("Location: index.php?view=dashboard_paciente");
+                            break;
+                        default: // Por si hay un rol no definido
+                            header("Location: index.php?view=dashboard_general");
+                            break;
+                    }
+                    exit(); // Detenemos la ejecución después de redireccionar
+                    }
             }
+            return "Usuario o contraseña incorrectos.";
         }
-        return "Usuario o contraseña incorrectos.";
-    }
 
             public function registrarNuevoPaciente($datos) {
         // 1. Validar contraseñas

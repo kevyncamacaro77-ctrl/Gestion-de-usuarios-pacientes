@@ -51,22 +51,27 @@ switch ($view) {
         include 'views/layouts/header.php';
         include 'views/layouts/sidebar.php';
 
-        // Carga automática de la interfaz según el Rol de la BD
-        $rol = $_SESSION['rol'];
-        if ($rol === 'Administrador') {
-            require_once 'views/admin/index.php';
-        } elseif ($rol === 'Medico') {
-            require_once 'views/medico/index.php';
-        } elseif ($rol === 'Secretaria') {
-            require_once 'views/secretaria/index.php';
-        } elseif ($rol === 'Paciente') {
-            require_once 'views/paciente/index.php';
-        }
-
-        include 'views/layouts/footer.php';
+        case 'dashboard_admin':
+        if ($_SESSION['rol'] != 1) { header("Location: index.php"); exit(); }
+        require_once 'views/admin/dashboard_admin.php';
         break;
 
-    case 'registrar_paciente':
+         case 'dashboard_medico':
+        if ($_SESSION['rol'] != 2) { header("Location: index.php"); exit(); }
+        require_once 'views/medico/dashboard_medico.php';
+        break;
+
+         case 'dashboard_secretaria':
+        if ($_SESSION['rol'] != 3) { header("Location: index.php"); exit(); }
+        require_once 'views/secretaria/dashboard_secretaria.php';
+        break;
+
+         case 'dashboard_paciente':
+        if ($_SESSION['rol'] != 4) { header("Location: index.php"); exit(); }
+        require_once 'views/paciente/dashboard_paciente.php';
+        break;
+
+        case 'registrar_paciente':
         // Restricción de acceso por nivel de seguridad
         if ($_SESSION['rol'] !== 'Secretaria' && $_SESSION['rol'] !== 'Administrador') {
             header("Location: index.php?view=dashboard");
