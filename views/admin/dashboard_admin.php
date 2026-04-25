@@ -4,8 +4,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
     header("Location: index.php?view=login");
     exit();
 }
-
-$especialidades = $this->especialidadModel->obtenerTodas();
 ?>
 
 
