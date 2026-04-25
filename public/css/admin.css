@@ -78,3 +78,207 @@
     font-size: 0.9rem;
     opacity: 0.8;
 }
+/* Estilos para la Tabla de Usuarios */
+.table-container {
+    margin-top: 30px;
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+
+.user-table th {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+    text-align: left;
+    padding: 0 20px;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.user-row {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.user-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.user-row td {
+    padding: 15px 20px;
+    color: #fff;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info i {
+    font-size: 1.4rem;
+    color: #00d2ff;
+    opacity: 0.8;
+}
+
+/* Badges de Estado */
+.badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-activo { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); }
+.badge-inactivo { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.3); }
+.badge-suspendido { background: rgba(255, 170, 0, 0.1); color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.3); }
+
+/* Formulario y Select */
+.form-update {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.select-custom {
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-update {
+    background: #00d2ff;
+    color: #000;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-update:hover {
+    background: #fff;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+}
+/* --- ESTILOS PARA GESTIÓN DE USUARIOS (CRUD) --- */
+
+/* Botones de acción superiores */
+.action-buttons-container {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.btn-action {
+    background: rgba(0, 210, 255, 0.1);
+    color: #00d2ff;
+    border: 1px solid rgba(0, 210, 255, 0.5);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-action:hover {
+    background: #00d2ff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+}
+
+/* MODALES CON GLASSMORPHISM */
+/* --- AJUSTE DE MODALES MAESTROS (GLASSMORPHISM MEJORADO) --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Reducimos la opacidad para ver más el transfondo */
+    background: rgba(0, 0, 0, 0.7); 
+    backdrop-filter: blur(12px); /* El desenfoque pro */
+    display: none; /* Se activa con JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    /* Usamos el mismo color oscuro de tu sidebar para mimetizarla */
+    background: rgba(26, 26, 26, 0.8) !important;
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+/* ARREGLO DE INPUTS (Para que no se vean blancos) */
+.form-group input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 12px;
+    border-radius: 8px;
+    color: white !important;
+    margin: 10px 0;
+    outline: none;
+}
+
+.btn-save-modal {
+    width: 100%;
+    background: #00d2ff;
+    color: #000;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-save-modal:hover {
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-danger {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border-color: rgba(255, 77, 77, 0.3);
+}
+
+.alert-success {
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    border-color: rgba(0, 255, 136, 0.3);
+}

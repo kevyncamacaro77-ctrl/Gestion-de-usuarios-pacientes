@@ -130,6 +130,65 @@ switch ($view) {
         }
         break;
 
+        case 'gestion_usuarios':
+         if ($_SESSION['rol'] != 1) { header("Location: index.php"); exit(); }
+        require_once 'app/models/Admin.php';
+        $adminModel = new Admin($db);
+        $usuarios = $adminModel->listarUsuarios(); // Vamos a crear esta función
+        $roles = $adminModel->listarRoles();
+        $estados = $adminModel->listarEstados();
+        require_once 'views/admin/gestion_usuarios.php';
+        break;
+
+        case 'especialidades':
+        if ($_SESSION['rol'] != 1) { header("Location: index.php"); exit(); }
+        require_once 'app/models/Admin.php';
+        $adminModel = new Admin($db);
+        $especialidades = $adminModel->getEstadisticasCitas(); 
+        require_once 'views/admin/especialidades.php';
+        break;
+
+        // Dentro del switch ($view) en index.php
+
+    case 'crear_especialidad':
+    if ($_SESSION['rol'] != 1) { header("Location: index.php"); exit(); }
+    
+    if (isset($_POST['nombre_especialidad'])) {
+        require_once 'app/models/Admin.php';
+        $adminModel = new Admin($db);
+        $nombre = trim($_POST['nombre_especialidad']);
+
+        // 1. Validar si ya existe
+        if ($adminModel->existeEspecialidad($nombre)) {
+            header("Location: index.php?view=gestion_usuarios&msg=error_duplicado");
+        } else {
+            // 2. Si no existe, crear
+            $adminModel->crearEspecialidad($nombre);
+            header("Location: index.php?view=gestion_usuarios&msg=success");
+        }
+        exit(); 
+    }
+    break;
+
+    case 'crear_estado':
+        if ($_SESSION['rol'] != 1) { header("Location: index.php"); exit(); }
+        
+        if (isset($_POST['nombre_estado'])) {
+            require_once 'app/models/Admin.php';
+            $adminModel = new Admin($db);
+            $nombre = trim($_POST['nombre_estado']);
+
+            // 1. Validar si ya existe
+            if ($adminModel->existeEstado($nombre)) {
+                header("Location: index.php?view=gestion_usuarios&msg=error_duplicado");
+            } else {
+                // 2. Si no existe, crear
+                $adminModel->crearNuevoEstado($nombre); 
+                header("Location: index.php?view=gestion_usuarios&msg=success");
+            }
+            exit();
+        }
+        break;
     default:
         // Si la vista no existe, redirige al login centralizado
         require_once 'views/login.php';

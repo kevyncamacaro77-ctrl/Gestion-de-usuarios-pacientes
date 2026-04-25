@@ -7,11 +7,27 @@ $rol = $_SESSION['rol'] ?? '';
         <ul>
             <li><a href="index.php?view=dashboard">🏠 Inicio</a></li>
 
-            <?php if ($rol == 'Administrador'): ?>
-                <li><a href="index.php?view=usuarios">👥 Gestión de Usuarios</a></li>
-                <li><a href="index.php?view=especialidades">👁️ Especialidades</a></li>
-                <li><a href="index.php?view=reportes_global">📊 Reportes Globales</a></li>
-                <li><a href="index.php?view=agenda_global">📅 Calendario General</a></li>
+            <?php if ($_SESSION['rol'] == 1): // Usamos el ID 1 para Administrador ?>
+                <li>
+                    <a href="index.php?view=gestion_usuarios">
+                        <i class="fas fa-users-cog"></i>👥 Gestión de Usuarios
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?view=especialidades">
+                        <i class="fas fa-stethoscope"></i> 👁️ Especialidades
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?view=reportes">
+                        <i class="fas fa-file-invoice-dollar"></i> 📊 Reportes Globales
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?view=agenda_global">
+                        <i class="fas fa-calendar-alt"></i> 📅 Calendario General
+                    </a>
+                </li>
             <?php endif; ?>
 
             <?php if ($rol == 'Medico'): ?>
