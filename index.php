@@ -53,6 +53,14 @@ switch ($view) {
 
         case 'dashboard_admin':
         if ($_SESSION['rol'] != 1) { header("Location: index.php"); exit(); }
+        
+        // Solo cargamos los datos, SIN agregar includes de layouts aquí
+        require_once 'app/models/Admin.php';
+        $adminModel = new Admin($db);
+        $especialidades = $adminModel->getEstadisticasCitas();
+        $totalPacientes = $adminModel->getTotalPacientes();
+
+        // Cargamos tu vista original que ya tiene su propio CSS y Sidebar
         require_once 'views/admin/dashboard_admin.php';
         break;
 
@@ -116,14 +124,10 @@ switch ($view) {
         case 'paciente_dashboard':
         // Seguridad básica: solo permitir si hay sesión de paciente
         if (isset($_SESSION['rol']) && $_SESSION['rol'] == 4) {
-            include 'views/paciente_dashboard.php';
+            include 'views/paciente/paciente_dashboard.php';
         } else {
             header("Location: index.php?view=login");
         }
-        break;
-
-         case 'dashboard_general':
-        include 'views/dashboard_general.php';
         break;
 
     default:

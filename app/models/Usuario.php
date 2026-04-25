@@ -11,8 +11,7 @@ class Usuario {
      * Busca un usuario por su nombre e incluye su rol y su estado de actividad.
      */
     public function buscarPorNombre($nombre) {
-        // Usamos la versión completa con los dos JOINs
-        $sql = "SELECT u.*, r.nombre_rol, e.Activo 
+        $sql = "SELECT u.*, r.nombre_rol, e.nombre_estado 
                 FROM Usuario u 
                 INNER JOIN rol r ON u.idrol = r.idrol 
                 INNER JOIN estado_usuario e ON u.idestado_usuario = e.idestado_usuario

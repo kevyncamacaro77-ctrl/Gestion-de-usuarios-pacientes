@@ -1,6 +1,4 @@
 <?php
-// app/models/Paciente.php
-
 class Paciente {
     private $conn;
 
@@ -22,24 +20,9 @@ class Paciente {
             ]);
             $idUsuarioCreado = $this->conn->lastInsertId();
 
-            // 2. Crear el Estado del Paciente (Antecedentes)
-            // Vinculamos con el ID del usuario que registra (el de la sesión actual)
-            $sqlEstado = "INSERT INTO Estado_paciente (tipo_sangre, antecedentes_personales, alergias, antecedentes_familiares, habitos_psicobiologicos, id_usuario) 
-                          VALUES (:sangre, :ant_p, :alergias, :ant_f, :habitos, :id_autor)";
-            $stmtEstado = $this->conn->prepare($sqlEstado);
-            $stmtEstado->execute([
-                'sangre'  => $datosMedicos['tipo_sangre'],
-                'ant_p'   => $datosMedicos['antecedentes_personales'],
-                'alergias' => $datosMedicos['alergias'],
-                'ant_f'   => $datosMedicos['antecedentes_familiares'],
-                'habitos' => $datosMedicos['habitos_psicobiologicos'],
-                'id_autor'=> $_SESSION['id_usuario'] 
-            ]);
-            $idEstadoCreado = $this->conn->lastInsertId();
-
-            // 3. Crear los datos del Paciente vinculado a los anteriores
-            $sqlPaciente = "INSERT INTO paciente (id_usuario, nombre, apellido, cedula, correo, telefono, direccion, idEstado_paciente) 
-                            VALUES (:id_u, :nom, :ape, :ced, :cor, :tel, :dir, :id_e)";
+            // 2. Crear los datos del Paciente vinculado al Usuario
+            $sqlPaciente = "INSERT INTO paciente (id_usuario, nombre, apellido, cedula, correo, telefono, direccion) 
+                            VALUES (:id_u, :nom, :ape, :ced, :cor, :tel, :dir)";
             $stmtPac = $this->conn->prepare($sqlPaciente);
             $stmtPac->execute([
                 'id_u' => $idUsuarioCreado,
@@ -48,8 +31,30 @@ class Paciente {
                 'ced'  => $datosPersonales['cedula'],
                 'cor'  => $datosPersonales['correo'],
                 'tel'  => $datosPersonales['telefono'],
-                'dir'  => $datosPersonales['direccion'],
-                'id_e' => $idEstadoCreado
+                'dir'  => $datosPersonales['direccion']
+            ]);
+            $idPacienteCreado = $this->conn->lastInsertId();
+
+            // 3. Crear los Antecedentes (en la tabla 'antecedentes')
+            $sqlAnt = "INSERT INTO antecedentes (tipo_sangre, antecedentes_personales, alergias, antecedentes_familiares, habitos_psicobiologicos) 
+                       VALUES (:sangre, :ant_p, :alergias, :ant_f, :habitos)";
+            $stmtAnt = $this->conn->prepare($sqlAnt);
+            $stmtAnt->execute([
+                'sangre'  => $datosMedicos['tipo_sangre'],
+                'ant_p'   => $datosMedicos['antecedentes_personales'],
+                'alergias' => $datosMedicos['alergias'],
+                'ant_f'   => $datosMedicos['antecedentes_familiares'],
+                'habitos' => $datosMedicos['habitos_psicobiologicos']
+            ]);
+            $idAntecedenteCreado = $this->conn->lastInsertId();
+
+            // 4. Vincular Paciente con Antecedente (en la tabla intermedia)
+            $sqlVinculo = "INSERT INTO paciente_antecedente (paciente_idpaciente, antecedentes_idantecedentes) 
+                           VALUES (:id_p, :id_a)";
+            $stmtVinculo = $this->conn->prepare($sqlVinculo);
+            $stmtVinculo->execute([
+                'id_p' => $idPacienteCreado,
+                'id_a' => $idAntecedenteCreado
             ]);
 
             $this->conn->commit();

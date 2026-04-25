@@ -20,7 +20,7 @@ class AuthController {
 
                 if ($password_valida) {
                     // Verificamos si el usuario está activo
-                    if ($user['Activo'] !== 'Si') {
+                    if ($user['nombre_estado'] !== 'Activo') {
                         return "Su cuenta se encuentra inactiva.";
                     }
 
@@ -86,19 +86,19 @@ class AuthController {
             $idUsuario = $this->conn->lastInsertId();
 
             // 4. Insertar Paciente
-            $sqlPac = "INSERT INTO paciente (id_usuario, nombre, apellido, cedula, correo, telefono, direccion, idEstado_paciente) 
-                    VALUES (:id_u, :nom, :ape, :ced, :mail, :tel, :dir, 1)";
-            
-            $stmtPac = $this->conn->prepare($sqlPac);
-            $stmtPac->execute([
-                'id_u' => $idUsuario,
-                'nom'  => $datos['nombre'],
-                'ape'  => $datos['apellido'],
-                'ced'  => $datos['cedula'],
-                'mail' => $datos['correo'],
-                'tel'  => $datos['telefono'],
-                'dir'  => $datos['direccion']
-            ]);
+            $sqlPac = "INSERT INTO paciente (id_usuario, nombre, apellido, cedula, correo, telefono, direccion) 
+           VALUES (:id_u, :nom, :ape, :ced, :mail, :tel, :dir)";
+
+                $stmtPac = $this->conn->prepare($sqlPac);
+                $stmtPac->execute([
+                    'id_u' => $idUsuario,
+                    'nom'  => $datos['nombre'],
+                    'ape'  => $datos['apellido'],
+                    'ced'  => $datos['cedula'],
+                    'mail' => $datos['correo'],
+                    'tel'  => $datos['telefono'],
+                    'dir'  => $datos['direccion']
+                ]);
 
             $this->conn->commit();
             return true;
